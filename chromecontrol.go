@@ -1,28 +1,56 @@
 package chromecontrol
 
 /*
-#cgo CFLAGS: -x objective-c
+#cgo CFLAGS: -x objective-c -fobjc-arc 
 #cgo LDFLAGS: -framework ScriptingBridge -framework Foundation
 #import <Foundation/Foundation.h>
 #import "GoogleChrome.h"
 
-void
-enterPresentationMode(void) {
-    GoogleChromeApplication *chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
+GoogleChromeApplication*
+chrome(void) {
+	return [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
+}
 
-    GoogleChromeWindow *window = chrome.windows.firstObject;
+GoogleChromeWindow*
+activeWindow(void) {
+	GoogleChromeApplication* app = chrome();
+
+    GoogleChromeWindow *window = app.windows.firstObject;
 
     // Create new window if no window exist
     if (!window) {
-        window = [[[chrome classForScriptingClass:@"window"] alloc] init];
-        [chrome.windows addObject:window];
+        window = [[[app classForScriptingClass:@"window"] alloc] init];
+        [app.windows addObject:window];
     }
 
+    return window;
+}
+
+void
+openURLInNewTab(char* url) {
+	NSString *urlString =  [NSString stringWithUTF8String:url];
+
+	GoogleChromeApplication* app = chrome();
+    GoogleChromeTab *tab = [[[app classForScriptingClass:@"tab"] alloc] init];
+    GoogleChromeWindow *window = activeWindow();
+    [window.tabs addObject:tab];
+    tab.URL = urlString;
+
+	free(url);
+}
+
+void
+enterPresentationMode(void) {
+	GoogleChromeWindow *window = activeWindow();
     [window enterPresentationMode];
 }
 
 */
 import "C"
+
+func OpenURLInNewTab(url string) {
+	C.openURLInNewTab(C.CString(url))
+}
 
 func EnterPresentationMode() {
 	C.enterPresentationMode()
