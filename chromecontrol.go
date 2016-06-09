@@ -27,6 +27,22 @@ activeWindow(void) {
 }
 
 void
+closeActiveWindow(void) {
+	GoogleChromeWindow *window = activeWindow();
+	[window close];
+}
+
+void
+openURLInActiveTab(char* url) {
+	NSString *urlString =  [NSString stringWithUTF8String:url];
+
+	GoogleChromeWindow *window = activeWindow();
+	window.activeTab.URL = urlString;
+
+	free(url);
+}
+
+void
 openURLInNewTab(char* url) {
 	NSString *urlString =  [NSString stringWithUTF8String:url];
 
@@ -47,6 +63,14 @@ enterPresentationMode(void) {
 
 */
 import "C"
+
+func CloseActiveWindow() {
+	C.closeActiveWindow()
+}
+
+func OpenURLInActiveTab(url string) {
+	C.openURLInActiveTab(C.CString(url))
+}
 
 func OpenURLInNewTab(url string) {
 	C.openURLInNewTab(C.CString(url))
