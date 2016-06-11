@@ -27,6 +27,12 @@ activeWindow(void) {
 }
 
 void
+quit(void) {
+	GoogleChromeApplication* app = chrome();
+	[app quit];
+}
+
+void
 closeActiveWindow(void) {
 	GoogleChromeWindow *window = activeWindow();
 	[window close];
@@ -63,6 +69,10 @@ enterPresentationMode(void) {
 
 */
 import "C"
+
+func Quit() {
+	C.quit()
+}
 
 func CloseActiveWindow() {
 	C.closeActiveWindow()
