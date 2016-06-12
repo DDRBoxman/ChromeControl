@@ -70,22 +70,27 @@ enterPresentationMode(void) {
 */
 import "C"
 
+// Quit exits the currently open Chrome Application
 func Quit() {
 	C.quit()
 }
 
+// CloseActiveWindow closes the currently active Chrome window
 func CloseActiveWindow() {
 	C.closeActiveWindow()
 }
 
+// OpenURLInActiveTab navigates to the provided url in the currently active tab
 func OpenURLInActiveTab(url string) {
 	C.openURLInActiveTab(C.CString(url))
 }
 
+// OpenURLInNewTab opens a new tab and navigates to the provided url
 func OpenURLInNewTab(url string) {
 	C.openURLInNewTab(C.CString(url))
 }
 
+// EnterPresentationMode makes the currently active Chrome app enter presentation mode
 func EnterPresentationMode() {
 	C.enterPresentationMode()
 }
